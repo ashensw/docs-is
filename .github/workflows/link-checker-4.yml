@@ -1,0 +1,20 @@
+name: Check Links on Live Website
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - name: Install link-checker
+      run: npm install -g link-checker
+
+    - name: Check Links on Live Website
+      run: link-checker https://is.docs.wso2.com/en/latest
