@@ -1,0 +1,25 @@
+name: Manual Link Check
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Install Rust
+      uses: actions-rs/toolchain@v1
+      with:
+        toolchain: stable
+        profile: minimal
+        override: true
+
+    - name: Install Lychee
+      run: cargo install lychee
+
+    - name: Check for Broken Links
+      run: lychee --verbose $(pwd)  # Adjust the path as per your requirement
