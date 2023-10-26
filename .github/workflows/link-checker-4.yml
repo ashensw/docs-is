@@ -17,4 +17,4 @@ jobs:
       run: npm install -g broken-link-checker
 
     - name: Check Links on Live Website
-      run: blc https://your-website-url.com -ro
+      run: blc https://is.docs.wso2.com/en/latest -ro
