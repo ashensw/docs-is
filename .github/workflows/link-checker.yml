@@ -1,0 +1,22 @@
+name: Broken Link Checker Workflow
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'Enter the URL to check for broken links:'
+        required: true
+        default: 'https://is.docs.wso2.com'
+
+jobs:
+  broken_link_checker_job:
+    runs-on: ubuntu-latest
+    name: Check for broken links
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Check for broken links
+        id: link-report
+        uses: elliotforbes/broken-link-checker@1.0.2
+        with:
+          url: ${{ github.event.inputs.url }}
