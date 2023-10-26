@@ -1,0 +1,23 @@
+name: Check Broken Links
+
+on:
+  workflow_dispatch:
+
+jobs:
+  check-links:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+
+    - name: Install broken-link-checker
+      run: npm install -g broken-link-checker
+
+    - name: Check for Broken Links
+      run: blc http://yourwebsite.com -ro
