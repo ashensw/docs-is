@@ -1,23 +1,34 @@
 const puppeteer = require('puppeteer');
 
 async function checkLinks(url) {
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch({ headless: 'new' });
   const page = await browser.newPage();
   await page.goto(url);
 
-  const links = await page.evaluate(() =>
-    Array.from(document.querySelectorAll('a'))
-      .map(link => link.href)
-  );
+  // Find all clickable elements
+  const clickableElements = await page.$$('[href], button, [role="button"], [onclick], [tabindex="0"]');
+  
+  for (const element of clickableElements) {
+    try {
+      // Try to click the element and wait for navigation
+      await Promise.all([
+        element.click(),
+        page.waitForNavigation({ waitUntil: 'networkidle0' }),
+      ]);
 
-  for (const link of links) {
-    const response = await page.goto(link);
-    if (!response.ok()) {
-      console.error(`Broken link found: ${link} - Status: ${response.status()}`);
-    } else {
-      console.log(`Working link: ${link} - Status: ${response.status()}`);
+      // Check the response status after navigation
+      const response = await page.reload({ waitUntil: ['networkidle0', 'domcontentloaded'] });
+      if (response && !response.ok()) {
+        console.error(`Broken link found: ${page.url()} - Status: ${response.status()}`);
+      } else {
+        console.log(`Working link: ${page.url()} - Status: ${response.status()}`);
+      }
+
+      // Go back to the original page
+      await page.goto(url, { waitUntil: 'networkidle0' });
+    } catch (error) {
+      console.error(`Error checking link: ${error.message}`);
     }
-    await page.goto(url);
   }
 
   await browser.close();
