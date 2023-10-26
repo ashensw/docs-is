@@ -1,4 +1,4 @@
-name: Check Links
+name: Check Links on Live Site 5
 
 on:
   workflow_dispatch:
@@ -11,22 +11,5 @@ jobs:
   check-links:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Set up Python
-      uses: actions/setup-python@v3
-      with:
-        python-version: '3.x'
-
-    - name: Install MkDocs
-      run: pip install mkdocs
-
-    - name: Build MkDocs Site
-      run: mkdocs build
-
     - name: Run LinkChecker
-      run: |
-        docker run --rm -v ${{ github.workspace }}/site:/site linkchecker/linkchecker /site --check-extern
-      env:
-        SITE_URL: ${{ github.event.inputs.site-url }}
+      run: docker run --rm linkchecker/linkchecker ${{ github.event.inputs.site-url }} --check-extern
