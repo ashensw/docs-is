@@ -47,6 +47,7 @@ jobs:
             --ignore-url ^http://urnoasisnamestcsaml \
             --ignore-url ^http://wso2is\. \
             --ignore-url example \
+            --ignore-url 9443\/carbon \
             --check-extern \
             $BASE_URL > ./logs/${{ steps.sanitize.outputs.filename }}.html
 
