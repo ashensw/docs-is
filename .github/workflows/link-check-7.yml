@@ -30,7 +30,7 @@ jobs:
 
       - name: Sanitize URL for Filename
         id: sanitize
-        run: echo "::set-output name=filename::$(echo $BASE_URL | sed 's/[^a-zA-Z0-9]/_/g')"
+        run: echo "filename=$(echo $BASE_URL | sed 's/[^a-zA-Z0-9]/_/g')" >> $GITHUB_OUTPUT
 
       - name: Check Links on Entire Website
         run: |
