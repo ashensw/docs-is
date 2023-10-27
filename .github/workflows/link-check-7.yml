@@ -44,7 +44,7 @@ jobs:
             --ignore-url ^http://schemas \
             --ignore-url ^http://urn:oasis:names:tc:SAML \
             --ignore-url ^mailto: \
-            --ignore-url ^http://urnoasisnamestcsaml \
+            --ignore-url ^(?i)http://urnoasisnamestcSAML \
             --ignore-url ^http://wso2is\. \
             --ignore-url example \
             --ignore-url 9443\/carbon \
