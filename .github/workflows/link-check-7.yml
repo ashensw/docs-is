@@ -1,7 +1,7 @@
 name: Link Checker 7
 
 env:
-  WEBSITE_URL: www.YOURWEBSITEHERE.com
+  WEBSITE_URL: https://is.docs.wso2.com/en/latest
 
 # Run this workflow every time a new commit pushed to your repository
 on:
