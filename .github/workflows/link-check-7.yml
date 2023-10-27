@@ -45,6 +45,8 @@ jobs:
             --ignore-url ^http://urn:oasis:names:tc:SAML \
             --ignore-url ^mailto: \
             --ignore-url ^http://urnoasisnamestcSAML \
+            --ignore-url ^http://wso2is\. \
+            --ignore-url example \
             --check-extern \
             $BASE_URL > ./logs/${{ steps.sanitize.outputs.filename }}.html
 
