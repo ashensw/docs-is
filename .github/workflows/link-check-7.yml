@@ -21,7 +21,7 @@ on:
 
 jobs:
   website-checker:
-    name: ${{WEBSITE_URL}} Link Checker
+    name: Link Checker
     runs-on: ubuntu-latest
     continue-on-error: true
     steps:
