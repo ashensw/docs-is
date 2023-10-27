@@ -36,7 +36,7 @@ jobs:
         run: |
           linkchecker \
             --no-warnings \
-            -t 100 \
+            -t 500 \
             -o html \
             --ignore-url /internal/* \
             --ignore-url /some_other_directory/~.* \
