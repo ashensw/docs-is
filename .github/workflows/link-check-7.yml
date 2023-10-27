@@ -1,47 +1,62 @@
-name: Link Checker 7
+name: Full Site Link Checker
 
 on:
   schedule:
     - cron: '0 0 1 * *'
   workflow_dispatch:
     inputs:
-      logLevel:
-        description: 'Log level'
-        required: true
-        default: 'warning'
-      tags:
-        description: 'Test scenario tags'
       websiteUrl:
-        description: 'Website URL to check'
+        description: 'Base URL of the website to check'
         required: true
-        default: 'https://is.docs.wso2.com/en/latest'
+        default: 'https://your-website.com'
 
 jobs:
-  website-checker:
+  link-checker:
     name: Link Checker
     runs-on: ubuntu-latest
     continue-on-error: true
     env:
-      WEBSITE_URL: ${{ github.event.inputs.websiteUrl }}
+      BASE_URL: ${{ github.event.inputs.websiteUrl }}
     steps:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
+
       - name: Setup Environment
         run: |
           pip3 install git+https://github.com/linkchecker/linkchecker.git
           mkdir ./logs
 
-      - name: Check Links
+      - name: Sanitize URL for Filename
+        id: sanitize
+        run: echo "::set-output name=filename::$(echo $BASE_URL | sed 's/[^a-zA-Z0-9]/_/g')"
+
+      - name: Check Links on Entire Website
         run: |
           linkchecker \
-            --no-warnings  \
+            --no-warnings \
             -t 100 \
             -o html \
             --ignore-url /internal/* \
             --ignore-url /some_other_directory/~.* \
             --ignore-url /*\.extension \
-            $WEBSITE_URL > ./logs/$WEBSITE_URL.html
+            --check-extern \
+            --recursion-level=10 \
+            $BASE_URL > ./logs/${{ steps.sanitize.outputs.filename }}.html
 
-      # ... (rest of the workflow remains the same)
+      - name: Process Link Log
+        if: always()
+        continue-on-error: true
+        run: |
+          SUMMARY=$(awk '/\d* warnings found/' ./logs/${{ steps.sanitize.outputs.filename }}.html)
+          echo "LC_SUMMARY=$SUMMARY" >> $GITHUB_ENV
+          echo $SUMMARY
+          cat $GITHUB_ENV
+
+      - name: Upload Artifact Logs
+        uses: actions/upload-artifact@v2
+        if: always()
+        with:
+          name: link-check-report.html
+          path: ./logs/${{ steps.sanitize.outputs.filename }}.html
