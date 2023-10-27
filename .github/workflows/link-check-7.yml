@@ -36,14 +36,20 @@ jobs:
         run: |
           linkchecker \
             --no-warnings \
-            -t 500 \
+            -t 200 \
             -o html \
+            --ignore-url ^http://localhost \
+            --ignore-url ^https://localhost \
+            --ignore-url ^https://wso2\.org/claims \
+            --ignore-url ^http://schemas \
+            --ignore-url ^http://urn:oasis:names:tc:SAML: \
+            --ignore-url ^mailto: \
             --ignore-url /internal/* \
             --ignore-url /some_other_directory/~.* \
             --ignore-url /*\.extension \
             --check-extern \
-            --recursion-level=10 \
             $BASE_URL > ./logs/${{ steps.sanitize.outputs.filename }}.html
+
 
       - name: Process Link Log
         if: always()
