@@ -14,70 +14,42 @@
 # specific language governing permissions and limitations
 # under the License.
 
+INHERIT: ../../base.yml
+
 # Project information
-site_name: ""
 site_description: Documentation for WSO2 Identity Server
-site_author: WSO2
-site_url: https://is.docs.wso2.com/en/7.0.0/
-
-# Repository
-repo_name: wso2/docs-is
-# repo_url: https://github.com/wso2/docs-is
-# edit_uri: https://github.com/wso2/docs-is/edit/master/en/docs/
-
-# Copyright
-copyright: WSO2 Identity Server - Documentation
+site_url: &site_url https://is.docs.wso2.com/en/next
 
 # Configuration
 theme:
-  name: material
   custom_dir: ../../theme/material
   logo: assets/images/identity-server-docs-logo-dark.svg
   logo_light: assets/images/identity-server-docs-logo.svg
-  font:
-    text: Nunito
   favicon: assets/images/identity-server-favicon.png
-  toc: false
-  features:
-    # Top navigation
-    - navigation.tabs
-    # Top navigation - sticky
-    - navigation.tabs.sticky
-    # Section index pages
-    - navigation.indexes
-    - navigation.path
-    - navigation.top
-    - content.code.copy
-    - content.action.edit
-    - content.action.view
-    - content.tabs.link
-    - search.suggest
-    - search.share
-  language: 'en'
-  palette:
-    # Palette toggle for automatic mode
-    - media: "(prefers-color-scheme)"
-      toggle:
-        icon: material/brightness-auto
-        name: Switch to light mode
 
-    # Palette toggle for light mode
-    - media: "(prefers-color-scheme: light)"
-      scheme: default 
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
+extra:
+  base_path: *site_url
+  product: is
+  is_version: 7.0.0
+  nav_list:
+    - Get Started
+    - Guides
+    - Tutorials
+    - Integrations
+    - APIs
+    - References
 
-    # Palette toggle for dark mode
-    - media: "(prefers-color-scheme: dark)"
-      scheme: slate
-      toggle:
-        icon: material/brightness-4
-        name: Switch to system preference
-  icon:
-    logo: logo
-#Breaks build if there's a warning
-strict: false
+watch:
+  - ../../theme/material
+
+plugins:
+  - search
+  - markdownextradata: {}
+  - include-markdown
+  - redirects:
+      redirect_maps:
+        'apis/idp-rest-api.md': 'https://is.docs.wso2.com/en/next/apis/idp/'
+
 # Navigation
 nav:
   - Home:
@@ -199,11 +171,10 @@ nav:
         - Configure the email sender: guides/branding/configure-email-sender.md
       - User management:
         - User management: guides/users/index.md
-        - Manage administrators: guides/users/manage-collaborators.md
-        - Manage users: guides/users/manage-customers.md
+        - Manage administrators: guides/users/manage-administrators.md
+        - Manage users: guides/users/manage-users.md
         - Manage groups: guides/users/manage-groups.md
         - Manage active sessions: guides/users/manage-sessions.md
-        - Migrate users to WSO2 Identity Server: guides/users/migrate-users.md
         - Manage attributes and mappings:
           - Manage attributes and mappings: guides/users/attributes/index.md
           - User attributes: guides/users/attributes/manage-attributes.md
@@ -389,6 +360,7 @@ plugins:
   - redirects:
       redirect_maps:
         'apis/idp-rest-api.md': 'https://is.docs.wso2.com/en/next/apis/idp/'
+        'guides/users/manage-collaborators.md': 'https://is.docs.wso2.com/en/next/guides/docs/manage-administrators/'
 extra_css:
   - assets/libs/fontawesome-free-6.4.2-web/css/all.min.css 
   - assets/css/overrides.css
@@ -400,7 +372,7 @@ extra:
   #   - icon: fontawesome/brands/github
   #     link: https://github.com/wso2
   # site_version: 1.0.0
-  # base_path: http://127.0.0.1:8000/en/7.0.0
+  #base_path: http://127.0.0.1:8000/en/7.0.0
   base_path: https://is.docs.wso2.com/en/next
   product: is
   nav_list:
