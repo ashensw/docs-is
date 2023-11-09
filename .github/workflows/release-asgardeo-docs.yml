@@ -26,13 +26,13 @@ jobs:
       - name: Update Downstream Repository Version
         run: |
           set -euxo pipefail
-          VERSION_FILE_PATH=${{ format('{0}/VERSION', env.GIT_REPO_NAME) }}
+          VERSION_FILE_PATH=${{ format('{0}/VERSION', docs-is) }}
           echo "VERSION_FILE_PATH: $VERSION_FILE_PATH"
           VERSION_LINE_PREFIX='GITHUB_RELEASE_TAG: v' # Line prefix to identify the version line
 
           # Clone the downstream repository
-          git clone "https://github.com/$GIT_ORG_NAME/$GIT_REPO_NAME.git"
-          cd $GIT_REPO_NAME
+          git clone "https://github.com/$GIT_ORG_NAME/docs-is.git"
+          cd docs-is
           git checkout $GIT_BRANCH_NAME
 
           # Extracting the current version line from the YAML file
