@@ -33,6 +33,9 @@ jobs:
           # Clone the downstream repository
           git clone "https://github.com/$GIT_ORG_NAME/docs-is.git"
           cd docs-is
+          pwd
+          ls
+          ll
           git checkout $GIT_BRANCH_NAME
 
           # Extracting the current version line from the YAML file
