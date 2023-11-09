@@ -25,7 +25,6 @@ jobs:
 
       - name: Update Downstream Repository Version
         run: |
-          set -euxo pipefail
           VERSION_FILE_PATH=docs-is/VERSION
           echo "VERSION_FILE_PATH: $VERSION_FILE_PATH"
           VERSION_LINE_PREFIX='GITHUB_RELEASE_TAG: v' # Line prefix to identify the version line
@@ -35,7 +34,6 @@ jobs:
           cd docs-is
           pwd
           ls
-          ll
           git checkout $GIT_BRANCH_NAME
 
           # Extracting the current version line from the YAML file
