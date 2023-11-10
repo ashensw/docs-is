@@ -44,4 +44,5 @@ jobs:
           sed -i 's|'"${CURRENT_VERSION_LINE}"'| '"${{ env.NEW_VERSION }}"'|' "$VERSION_FILE_PATH"
 
           # Verifying if the file has changed, and if so, committing and pushing it
+        shell: bash
           
