@@ -13,6 +13,7 @@ env:  # Global environment variables
   GIT_ORG_NAME: ${{ secrets.GIT_ORG_NAME }}
   GIT_REPO_NAME: ${{ secrets.GIT_REPO_NAME }}
   GIT_BRANCH_NAME: ${{ secrets.GIT_BRANCH_NAME }}
+  NEW_VERSION: 0.0.100
 
 jobs:
   release-asgardeo-docs:
@@ -27,7 +28,7 @@ jobs:
         run: |
           VERSION_FILE_PATH=$GITHUB_WORKSPACE/docs-is/VERSION
           echo "VERSION_FILE_PATH: $VERSION_FILE_PATH"
-          VERSION_LINE_PREFIX='GITHUB_RELEASE_TAG: v' # Line prefix to identify the version line
+          VERSION_LINE_PREFIX='0.0.' # Line prefix to identify the version line
 
           # Clone the downstream repository
           git clone "https://github.com/$GIT_ORG_NAME/docs-is.git"
@@ -37,11 +38,10 @@ jobs:
           git checkout $GIT_BRANCH_NAME
 
           # Extracting the current version line from the YAML file
-          CURRENT_VERSION_LINE=$(grep "$VERSION_LINE_PREFIX" "$VERSION_FILE_PATH" | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')
+          CURRENT_VERSION_LINE=$(grep "$VERSION_LINE_PREFIX" "$VERSION_FILE_PATH")
           
           # Replacing the current version line with the new version line
-          NEW_VERSION_LINE="${VERSION_LINE_PREFIX}${{ env.NEW_VERSION }}"
-          sed -i 's|'"${CURRENT_VERSION_LINE}"'|'"${NEW_VERSION_LINE}"'|' "$VERSION_FILE_PATH"
+          sed -i 's|'"${CURRENT_VERSION_LINE}"'| '"${{ env.NEW_VERSION }}"'|' "$VERSION_FILE_PATH"
 
           # Verifying if the file has changed, and if so, committing and pushing it
-        shell: bash
+          
